@@ -23,12 +23,10 @@ public class OoniTest implements Runnable {
     String settings;
     String result;
     TextView logtext;
-    TestBase test_base;
     OoniTest(String settings, TextView logText, Activity activity) {
         this.settings = settings;
         this.logtext = logText;
         this.activity = activity;
-        this.test_base = new TestBase(activity);
     }
 
     @Override

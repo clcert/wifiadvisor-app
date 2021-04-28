@@ -12,6 +12,7 @@ import com.example.wifiadvisor.enums.BlockingEnum;
 import com.example.wifiadvisor.enums.DnsConsistencyEnum;
 import com.example.wifiadvisor.moshi.adapters.ListTcpConnectWebTestOoni;
 import com.example.wifiadvisor.moshi.models.TcpConnectWebTestOoni;
+import com.example.wifiadvisor.moshi.models.TestBase;
 import com.example.wifiadvisor.moshi.models.WebTestOoni;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
@@ -114,7 +115,7 @@ public class Ooni {
         });
         JsonAdapter<WebTest> jsonAdapter = moshi.adapter(WebTest.class);
         OkHttpClient client = SingletonOkHttpCLient.getInstance().getClient();
-        String json = jsonAdapter.toJson(new WebTest(webTestOoniResult));
+        String json = jsonAdapter.toJson(new WebTest(webTestOoniResult, activity));
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(json, JSON);
         final Request request = new Request.Builder()
@@ -153,7 +154,7 @@ public class Ooni {
         JsonAdapter<NdtTest> jsonAdapter = moshi.adapter(NdtTest.class);
         OkHttpClient client = SingletonOkHttpCLient.getInstance().getClient();
         ndtResult.getSummary().setReport_id(ndtResult.report_id);
-        String json = jsonAdapter.toJson(new NdtTest(ndtResult.getSummary()));
+        String json = jsonAdapter.toJson(new NdtTest(ndtResult.getSummary(), activity));
 
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(json, JSON);
@@ -292,23 +293,28 @@ class Summary {
 
 class NdtTest {
     Summary test;
+    TestBase test_base;
 
-    NdtTest(Summary summary) {
+    NdtTest(Summary summary, Activity activity) {
         this.test = summary;
+        this.test_base = new TestBase(activity);
     }
 }
 
 class WebTest {
     WebTestOoni web_test_ooni;
     List<TcpConnectWebTestOoni> tcp_connect_web_tests_ooni;
+    TestBase test_base;
 
-    public WebTest(JsonWebTestOoni jsonWebTestOoni) {
+    public WebTest(JsonWebTestOoni jsonWebTestOoni, Activity activity) {
         TestKeysOoni testKey = jsonWebTestOoni.getTest_keys();
         this.web_test_ooni = new WebTestOoni(jsonWebTestOoni.report_id, jsonWebTestOoni.input, jsonWebTestOoni.resolver_asn, jsonWebTestOoni.resolver_ip,
                 jsonWebTestOoni.resolver_network_name, testKey.client_resolver, testKey.dns_experiment_failure, testKey.control_failure,
                 testKey.http_experiment_failure, testKey.dns_consistency, testKey.body_length_match, testKey.headers_match, testKey.status_code_match,
                 testKey.title_match, testKey.accessible, testKey.blocking);
         this.tcp_connect_web_tests_ooni = testKey.getTcpConnectWebTestOoniList();
+        this.test_base = new TestBase(activity);
+
     }
 
 }
