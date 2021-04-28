@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.wifiadvisor">
+    <!-- for communication with the backend -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- for protocol test -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/consejera"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".activities.BasicMeasurementActivity"
+            android:label="@string/basic_measurement" />
+        <activity
+            android:name=".activities.SpeedMeasurementActivity"
+            android:label="@string/speed_measurement" />
+        <activity
+            android:name=".activities.DevicesActivity"
+            android:label="@string/devices" />
+        <activity
+            android:name=".activities.BlockingTestActivity"
+            android:label="@string/blocking" />
+        <activity
+            android:name=".activities.MainActivity"
+>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
